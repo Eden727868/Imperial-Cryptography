@@ -1,4 +1,4 @@
-# Imperial-Cryptography-Project
+# Imperial Cryptography Project
 
 ## Ciphers
 
