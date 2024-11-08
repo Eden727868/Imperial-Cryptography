@@ -1,7 +1,7 @@
 from functools import reduce
 from collections import Counter
 
-def kasiskiAnalyser(ciphertext: str):
+def kasiski_analyser(ciphertext: str):
     string_to_analyse = ""
     for char in ciphertext:
         if char != " ":
@@ -48,4 +48,4 @@ def factors(n):
         ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
 
 if __name__ == "__main__":
-    print(kasiskiAnalyser(input()))
+    print(kasiski_analyser(input()))

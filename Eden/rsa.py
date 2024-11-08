@@ -1,20 +1,8 @@
 import math
 import random
+from utils import is_prime
 
-def isPrime(n: int) -> bool:
-    if n == 1:
-        return False
-    
-    if n == 2:
-        return True
-
-    for i in range(2, math.floor(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-
-    return True
-
-def genPublicKey(phi_n: int) -> int:
+def gen_publicKey(phi_n: int) -> int:
     e = random.randint(3, phi_n - 1)
 
     while math.gcd(e, phi_n) != 1:
@@ -22,14 +10,14 @@ def genPublicKey(phi_n: int) -> int:
 
     return e
 
-def genPrivateKey(e: int, phi_n: int) -> int:
+def gen_privateKey(e: int, phi_n: int) -> int:
     for d in range(3, phi_n):
         if e * d % phi_n == 1:
             return d
 
 max = 10000
 
-primes = [n for n in range(1, max) if isPrime(n)]
+primes = [n for n in range(1, max) if is_prime(n)]
 
 p = primes[random.randint(0, len(primes)-1)]
 print(p)
@@ -40,9 +28,9 @@ print(q)
 phi_n = (p-1) * (q-1)
 print(phi_n)
 
-e = genPublicKey(phi_n)
+e = gen_publicKey(phi_n)
 print(e)
 
-d = genPrivateKey(e, phi_n)
+d = gen_privateKey(e, phi_n)
 print(d)
 

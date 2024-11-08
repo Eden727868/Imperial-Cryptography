@@ -1,6 +1,6 @@
 from collections import Counter
 
-def stringIntoColumns(string: str, length: int, alphabet: str):
+def string_into_columns(string: str, length: int, alphabet: str):
     columns = [[] for i in range(0, length)]
     current_column = 0
 
@@ -15,3 +15,16 @@ def stringIntoColumns(string: str, length: int, alphabet: str):
 
 def most_common(lst):
     return max(set(lst), key=lst.count)
+
+def is_prime(n: int) -> bool:
+    if n == 1:
+        return False
+    
+    if n == 2:
+        return True
+
+    for i in range(2, math.floor(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+
+    return True

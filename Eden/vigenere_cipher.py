@@ -11,51 +11,51 @@ import utils
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-def vigenereCipher(string: str, keyword: str):
+def vigenere_cipher(plaintext: str, keyword: str):
 
     ciphertext = ""
     current_cipher_index = 0
     length_of_keyword = len(keyword)
 
-    for char in string:
+    for char in plaintext:
         if char.lower() in alphabet:
             if current_cipher_index > length_of_keyword - 1:
                 current_cipher_index = 0
             local_key = alphabet.index(keyword[current_cipher_index].lower())
-            ciphertext += caesar_shifter.caesarShift(char, alphabet, local_key)
+            ciphertext += caesar_shifter.caesar_shift(char, alphabet, local_key)
             current_cipher_index += 1
         else:
             ciphertext += char
 
     return ciphertext
 
-def vigenereDecipher(string: str, keyword: str):
+def vigenere_decipher(ciphertext: str, keyword: str):
 
     plaintext = ""
     current_plain_index = 0
     length_of_keyword = len(keyword)
 
-    for char in string:
+    for char in ciphertext:
         if char.lower() in alphabet:
             if current_plain_index > length_of_keyword - 1:
                 current_plain_index = 0
             local_key = 26 - alphabet.index(keyword[current_plain_index].lower())
-            plaintext += caesar_shifter.caesarShift(char, alphabet, local_key)
+            plaintext += caesar_shifter.caesar_shift(char, alphabet, local_key)
             current_plain_index += 1
         else:
             plaintext += char
 
     return plaintext
 
-def vigenereSolve(ciphertext: str):
-    likely_keylengths = kasiski.kasiskiAnalyser(ciphertext)
+def vigenere_solve(ciphertext: str):
+    likely_keylengths = kasiski.kasiski_analyser(ciphertext)
     likely_keylengths = [num for num in likely_keylengths if num <= 10]
     print(likely_keylengths)
 
     keys = []
 
     for length in likely_keylengths:
-        columns = utils.stringIntoColumns(ciphertext, length, alphabet)
+        columns = utils.string_into_columns(ciphertext, length, alphabet)
         key = ""
 
         for column in columns:
@@ -68,9 +68,9 @@ def vigenereSolve(ciphertext: str):
     key_chart = {} #[key, plaintext]: probability
 
     for key in keys:
-        potential_plaintext = vigenereDecipher(ciphertext, key)
+        potential_plaintext = vigenere_decipher(ciphertext, key)
         print(potential_plaintext)
-        probability = getEnglishness(potential_plaintext, 1)
+        probability = get_englishness(potential_plaintext, 1)
 
         key_chart[key, potential_plaintext] = probability
 
@@ -78,14 +78,17 @@ def vigenereSolve(ciphertext: str):
     print("----------\nBest guess:\nKey:", best_guess[0], "\nPlaintext:", best_guess[1])
 
 if __name__ == "__main__":
+    if len(argv) != 2:
+        print("Please enter a command-line argument: 0 to encode, 1 to decode with a known key, 2 to solve the key")
+        quit()
     if argv[1] == "0":
         plaintext = input("Enter a string\n")
         key = input("Enter a key\n")
-        print(vigenereCipher(plaintext, key))
+        print(vigenere_cipher(plaintext, key))
     elif argv[1] == "1":
         ciphertext = input("Enter a string\n")
         key = input("Enter a key\n")
-        print(vigenereDecipher(ciphertext, key))
+        print(vigenere_decipher(ciphertext, key))
     elif argv[1] == "2":
         ciphertext = input("Enter a string\n")
-        vigenereSolve(ciphertext)
+        vigenere_solve(ciphertext)
