@@ -6,14 +6,21 @@
 
 #### caesar_shifter.py
 
-- To encode a string, use command line argument '0'
-- To decode a string via brute force, use command line argument '1'
+- To encode a string, use command-line argument '0'
+- To decode a string via brute force, use command-line argument '1'
 
 #### vigenere_cipher.py
-- To encode a string, use command line argument '0'
-- To decode a string with a known key, use command line argument '1'
-- To guess the key of a ciphertext, use command line argument '2' <br>
+- To encode a string, use command-line argument '0'
+- To decode a string with a known key, use command-line argument '1'
+- To guess the key of a ciphertext, use command-line argument '2' <br>
 **the key guesser is not perfect, but tends to work better with larger ciphertexts**
+
+#### rsa.py
+- To generate keys, use command-line argument '0'
+- To encode a message, use command-line argument '1'
+- To decode a message, use command-line argument '2'
+- To sign a message, use command-line argument '3'
+- To verify a signature, use command-line argument '4'
 
 ---
 
