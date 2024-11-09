@@ -1,5 +1,7 @@
-# a program to check how many english words are in a string
-def get_englishness(text, speed):
+def get_englishness(text: str, speed: int) -> float:
+    ''' Returns % of text that is English, as an estimate of how likely it is that a string is the correct plaintext
+        'speed' is 0 or 1, chooses the size of the set of English words that is used
+    '''
     count = 0
 
     if speed == 1:

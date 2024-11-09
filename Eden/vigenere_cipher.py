@@ -5,13 +5,15 @@
 
 from sys import argv
 from englishness import *
-import caesar_shifter
-import kasiski
-import utils
+from caesar_shifter import caesar_shift
+from kasiski import kasiski_analyser
+from utils import most_common, string_into_columns
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-def vigenere_cipher(plaintext: str, keyword: str):
+def vigenere_cipher(plaintext: str, keyword: str) -> str:
+    ''' Takes string plaintext, string keyword as inputs, returns string ciphertext
+    '''
 
     ciphertext = ""
     current_cipher_index = 0
@@ -22,7 +24,7 @@ def vigenere_cipher(plaintext: str, keyword: str):
             if current_cipher_index > length_of_keyword - 1:
                 current_cipher_index = 0
             local_key = alphabet.index(keyword[current_cipher_index].lower())
-            ciphertext += caesar_shifter.caesar_shift(char, alphabet, local_key)
+            ciphertext += caesar_shift(char, alphabet, local_key)
             current_cipher_index += 1
         else:
             ciphertext += char
@@ -30,6 +32,9 @@ def vigenere_cipher(plaintext: str, keyword: str):
     return ciphertext
 
 def vigenere_decipher(ciphertext: str, keyword: str):
+    ''' Takes string ciphertext, string keyword, returns plaintext
+        Only used if the keyword is known
+    '''
 
     plaintext = ""
     current_plain_index = 0
@@ -40,26 +45,29 @@ def vigenere_decipher(ciphertext: str, keyword: str):
             if current_plain_index > length_of_keyword - 1:
                 current_plain_index = 0
             local_key = 26 - alphabet.index(keyword[current_plain_index].lower())
-            plaintext += caesar_shifter.caesar_shift(char, alphabet, local_key)
+            plaintext += caesar_shift(char, alphabet, local_key)
             current_plain_index += 1
         else:
             plaintext += char
 
     return plaintext
 
-def vigenere_solve(ciphertext: str):
-    likely_keylengths = kasiski.kasiski_analyser(ciphertext)
+def vigenere_solve(ciphertext: str) -> None:
+    ''' Method that only takes string ciphertext as input, returns no value
+        Runs kasiski analysis on ciphertext to guess keylength, then uses frequency analysis to guess keyword
+    '''
+    likely_keylengths = kasiski_analyser(ciphertext)
     likely_keylengths = [num for num in likely_keylengths if num <= 10]
     print(likely_keylengths)
 
     keys = []
 
     for length in likely_keylengths:
-        columns = utils.string_into_columns(ciphertext, length, alphabet)
+        columns = string_into_columns(ciphertext, length, alphabet)
         key = ""
 
         for column in columns:
-            most_common_letter = utils.most_common(column)
+            most_common_letter = most_common(column)
             index = alphabet.index(most_common_letter.lower()) - 4 #index of e
             key += alphabet[index]
         

@@ -3,8 +3,11 @@ from sys import argv
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-def caesar_shift(plaintext, keyset, key):
-    cipher = ""
+def caesar_shift(plaintext: str, keyset: str, key: int) -> str:
+    ''' Takes 3 paramters: plaintext, keyset (eg alphabet), key
+        Returns plaintext shifted by the key
+    '''
+    ciphertext = ""
     number_of_keys = len(keyset)
 
     for char in plaintext:
@@ -13,46 +16,52 @@ def caesar_shift(plaintext, keyset, key):
             index = keyset.index(char)
             new_index = (index + key) % number_of_keys
             char = keyset[new_index]
-            cipher += char
+            ciphertext += char
         else:
-            cipher += char
-    return cipher
+            ciphertext += char
+    return ciphertext
 
-def caesar_unshift(ciphertext, keyset, key):
+
+def caesar_unshift(ciphertext: str, keyset: str, key: int) -> str:
+    ''' Takes 3 parameters: ciphertext, keyset, key
+        Returns the plaintext shifted in reverse by the key
+    '''
     return caesar_shift(ciphertext, keyset, len(keyset) - key)
+
+
+def brute_force(ciphertext: str, keyset: str) -> None:
+    ''' Takes 2 parameters, ciphertext, keyset
+        Tries every possible key and prints the most likely shift
+    '''
+    explicit = input("Explicit output? [y/n]\n")
+    speed = int(input("Enter thoroughness [0, 1]\n"))
+
+    full_list = dict()
+
+    for current_key in range(0, len(keyset)):
+        current_shift = caesar_shift(ciphertext, keyset, current_key)
+        full_list[f"{current_key}: {current_shift}"] = get_englishness(current_shift, speed)
+
+        if explicit == "y":
+            print(f"{current_key}: {current_shift}", full_list[f"{current_key}: {current_shift}"])
+            print("Shift key:", current_key)
+
+    print("Maximum value:", max(full_list, key=full_list.get))
 
 if __name__ == "__main__":
     if len(argv) != 2:
-        print("Please enter 1 command-line argument: 0 to encode, 1 to decode")
+        print("Please enter 1 command-line argument: 0 to encode, 1 to decode, 2 to brute force")
         quit()
 
     text_input = input("Enter string\n")
     
     if argv[1] == "0":
-
-        key = int(input("Enter key [1-26]\n"))
+        key = int(input("Enter key [1-26]: "))
         print(caesar_shift(string, alphabet, key))
 
     elif argv[1] == "1":
+        key = int(input("Enter key [1-26]: "))
+        print(caesar_unshift(string, alphabet, key))
 
-        key = int(input("Enter key [1-26, or 0 to brute force]\n"))
-
-        if key == 0:
-
-            explicit = input("Explicit output? [y/n]\n")
-            speed = int(input("Enter thoroughness [0, 1]\n"))
-
-            full_list = dict()
-
-            for i in range(1, len(alphabet)):
-                current_shift = caesar_shift(string, alphabet, i)
-                key = str(i) + current_shift
-                full_list[f"{i}: {current_shift}"] = get_englishness(current_shift, speed)
-                if explicit == "y":
-                    print(f"{i}: {current_shift}", full_list[f"{i}: {current_shift}"])
-                    print("Shift key:", i)
-
-            print("Maximum value:", max(full_list, key=full_list.get))
-
-        else:
-            print(caesar_unshift(string, alphabet, key))
+    elif argv[1] == "2":
+        brute_force(text_input, alphabet)

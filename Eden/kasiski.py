@@ -1,7 +1,10 @@
 from functools import reduce
 from collections import Counter
 
-def kasiski_analyser(ciphertext: str):
+def kasiski_analyser(ciphertext: str) -> list[int]:
+    ''' Takes ciphertext as input and runs kasiski analysis on it
+        This is a technique to guess the key length of the ciphertext if it was encrypted with a vigenere cipher
+    '''
     string_to_analyse = ""
     for char in ciphertext:
         if char != " ":
@@ -40,9 +43,13 @@ def kasiski_analyser(ciphertext: str):
 
     distances_factors = list(dict.fromkeys(distances_factors)) # remove duplicates
 
+    distances_factors = [1] if distances_factors == [] else distances_factors # adds back one if the list is empty
+
     return distances_factors
 
 def factors(n):
+    ''' Takes integer input and returns a list of its factors
+    '''
     return set(reduce(
         list.__add__,
         ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
