@@ -1,4 +1,4 @@
-import englishness
+from englishness import get_englishness
 from sys import argv
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -47,7 +47,7 @@ if __name__ == "__main__":
             for i in range(1, len(alphabet)):
                 current_shift = caesar_shift(string, alphabet, i)
                 key = str(i) + current_shift
-                full_list[f"{i}: {current_shift}"] = englishness.get_englishness(current_shift, speed)
+                full_list[f"{i}: {current_shift}"] = get_englishness(current_shift, speed)
                 if explicit == "y":
                     print(f"{i}: {current_shift}", full_list[f"{i}: {current_shift}"])
                     print("Shift key:", i)
