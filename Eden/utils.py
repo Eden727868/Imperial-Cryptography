@@ -1,4 +1,5 @@
 from collections import Counter
+from math import floor, sqrt
 
 def string_into_columns(string: str, length: int, alphabet: str):
     columns = [[] for i in range(0, length)]
@@ -23,7 +24,7 @@ def is_prime(n: int) -> bool:
     if n == 2:
         return True
 
-    for i in range(2, math.floor(math.sqrt(n)) + 1):
+    for i in range(2, floor(sqrt(n)) + 1):
         if n % i == 0:
             return False
 
