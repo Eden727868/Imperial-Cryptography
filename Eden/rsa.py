@@ -110,7 +110,7 @@ if __name__ == "__main__":
         n = int(input("Enter N: "))
 
         plaintext = rsa_decipher(ciphertext, private_key, n)
-        print(f"Your plaintext message is:\n{deciphered_text}")
+        print(f"Your plaintext message is:\n{plaintext}")
 
     elif argv[1] == "3":
         message = input("Enter message to be signed:\n")
