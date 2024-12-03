@@ -167,11 +167,13 @@ Overall, the Caesar Cipher is a very primitive cipher that is very easy to crack
 
 \section{Programme of Work}
 \subsection{Meeting 1 (16.10.24)}
-In our first meeting we were introduced to classical cryptography with the Caesar and Vigenere ciphers. We were also given a small introduction to RSA encryption. We were tasked with programming and solving the Caesar and Vigenere ciphers and investigating RSA encryption in python.
+In our first meeting we were introduced to classical cryptography with the Caesar and Vigenere ciphers. We were also given a small introduction to RSA encryption. We were tasked with programming and solving the Caesar and Vigenere ciphers and investigating RSA encryption in python. The Vigenere cipher was much more difficult to decode than the Caesar cipher, as the size of the Caesar cipher's keyset is 26 while the size of the keyset of the the Vigenere cipher is $ 26^n $ where n is the length of the ciphertext. We first tried to decode it using the Index of Coincidence \cite{ioc} of columns of the ciphertext, which can be used to guess the length of the keyword, after which frequency analysis can be applied. This method was unsuccessful, and we then opted to Kasiski analysis \cite{kasiski}, which was much more succesful. Following this, we were able to decode the Vigenere cipher to a large degree of accuracy - on certain ciphertexts, particular of a small length, have a lower chance of being correctly decoded due to the nature of the Vigenere cipher, being easier to decode with larger texts.
 
 \subsection{Meeting 2 (6.11.24)}
-In our second meeting, Mr Savage reviewed our code and guided us on making it more readable. We discussed the specific details of our research project, and considered investigating post-quantum cryptography, as RSA encryption is not quantum secure since it relies on the difficulty of prime factorisation, which quantum computers will excell at.
+During our second meeting, Mr Savage reviewed our code and guided us on making it more pythonic and instructed us to add docstrings. We also discussed the specific details of our long-term goal of our project, and we decided to target quantum computers, as we believe that these pose the greatest threat to quantum cryptography. After the meeting, we updated our code according to Mr Savage's guidelines, and proceeded to research quantum algorithms. RSA encryption's security depends on the hardness of integer factorisation, (which on classical computers has time complexity big O, while quantum computers have time complexity big O), due to Shor's algorithm, which can theoretically be used to factorise integers very quickly once there are powerful enough quantum computers (insert value of how powerful). We also began to research 'learning with errors', which is the basis of many quantum-resistant algorithms \cite{LWE}.
 
+\subsection{Meeting 3 (20.11.24)}
+During our third meeting, Mr Savage provided us with a Github repository of a lattice-based learning with errors cipher, with guidance on what research we could pursue.
 
 \bibliographystyle{unsrt}
 \bibliography{references}
