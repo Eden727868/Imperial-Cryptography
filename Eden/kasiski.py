@@ -36,14 +36,16 @@ def kasiski_analyser(ciphertext: str) -> list[int]:
     distances_factors = []
     for distance in distances:
         distances_factors += factors(distance)
-
-    distances_factors = [num for num in distances_factors if num != 1] # remove 1
-
-    distances_factors = [item for items, c in Counter(distances_factors).most_common() for item in [items] * c] # sort into frequency
-
-    distances_factors = list(dict.fromkeys(distances_factors)) # remove duplicates
-
-    distances_factors = [1] if distances_factors == [] else distances_factors # adds back one if the list is empty
+        # factors(n) returns a set of the factors of n
+ 
+    # remove 1
+    distances_factors = [num for num in distances_factors if num != 1]
+    # sort into frequency
+    distances_factors = [item for items, c in Counter(distances_factors).most_common() for item in [items] * c]
+    # remove duplicates
+    distances_factors = list(dict.fromkeys(distances_factors))
+    # adds back one if the list is empty
+    distances_factors = [1] if distances_factors == [] else distances_factors
 
     return distances_factors
 
