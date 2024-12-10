@@ -1,0 +1,43 @@
+Lattice based
+fast
+not too big
+already adopted
+
+polynomials
+
+module learning with errors
+
+As + e0 = t
+Public = (A, t)
+Private = s (small coefficients)
+Plaintext is large, errors have small coefficients
+
+ex:
+   C = 100011 (ascii bin)
+   => x^6 + x + 1
+   m = x^6 + x + 1 (plaintext)
+
+   1: scale m, multiply by 1337 (or some other num):
+   m_s = 1337x^6 + 1337x + 1337
+   
+   v = t(e1) + e2 + m
+   u = A(e1) + e3       : ciphertext
+   e is error terms
+
+   Decryption:
+      d = v - su
+        = e0 * e1 + e2 + m + s * e3
+        = m + e0e1 + e2 + se3
+
+        m is large, all else is small
+      d ~= m
+
+      d = C
+
+n is the degree of the polynomial (256)
+k is the size of the vector (of polynomials) (2-4)
+q is the modulus (3329)
+
+Kyber is lattice-based
+
+Kyber 512 as strong as AES 128 (priv key size 1632, pub key size 800, ciphertext size 768)
