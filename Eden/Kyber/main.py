@@ -35,16 +35,15 @@ class Polynomial:
     def subtract(self, poly_2):
         difference_polynomial = [0] * (max(self.order, poly_2.order) + 1)
         
-        larger_polynomial = self.coefficients if self.order >= poly_2.order else poly_2.coefficients
-        smaller_polynomial = self.coefficients if self.order < poly_2.order else poly_2.coefficients
+        while poly_2.order < self.order:
+            poly_2.coefficients.insert(0, 0)
+        while self.order < poly_2.order:
+            self.coefficients.insert(0, 0)
 
-        while len(smaller_polynomial) != len(larger_polynomial):
-            smaller_polynomial.insert(0, 0)
-
-        for i in range(len(larger_polynomial)):
+        for i in range(self.order):
             # print(i)
             # print(sum_polynomial)
-            difference_polynomial_polynomial[i] = larger_polynomial[i] - smaller_polynomial[i]
+            difference_polynomial[i] = self.coefficients[i] - poly_2.coefficients[i]
         
         return Polynomial(difference_polynomial)
 
@@ -56,6 +55,10 @@ class Polynomial:
     def upscale(self, n):
         for i in range(len(self.coefficients)):
             self.coefficients[i] *= n
+
+    def downscale(self, n):
+        for i in range(len(self.coefficients)):
+            self.coefficients[i] //= n
 
     def __str__(self):
         return str(self.coefficients)
@@ -119,11 +122,11 @@ class Kyber:
 
             polynomial = polynomial.add(error_vector[i])
             polynomial.modular_reduce(self.mod_q)
-            print(polynomial)
+            # print(polynomial)
             t.append(polynomial)
 
         public_key = (lattice, t)
-        print(t)
+        # print(t)
 
         return public_key, secret_key
 
@@ -178,15 +181,35 @@ class Kyber:
         
         return (poly_vector_u, poly_v)
 
-    # def decrypt_message(self, ciphertext, secret_key):
-    #     poly_vector_u = ciphertext[0]
-    #     sk_x_u = []
-    #     for i in range()
+    def decrypt_message(self, ciphertext, secret_key):
+        poly_vector_u = ciphertext[0]
+        poly_v = ciphertext[1]
+
+        s_x_u = Polynomial([0])
+        for i in range(len(secret_key)):
+            s_x_u = s_x_u.add(secret_key[i].multiply(poly_vector_u[i]))
+
+        noisy_message = poly_v.subtract(s_x_u)
+        noisy_message.modular_reduce(self.mod_q)
         
+        round_val = round(self.mod_q/2)
+        for i in range(len(noisy_message.coefficients)):
+            noisy_message.coefficients[i] = round_val * round(noisy_message.coefficients[i] / round_val)
+
+        noisy_message.downscale(self.mod_q)
+
+        # return int("".join(noisy_message.coefficients), 2)
+        return noisy_message.coefficients
         
 
 
 if __name__ == "__main__":
-    poly1 = Polynomial([2, 1, 2])
-    poly2 = Polynomial([3, 0, 3, 7])
-    print(poly1.add(poly2))
+    # poly1 = Polynomial([2, 1, 2]) poly2 = Polynomial([3, 0, 3, 7])
+    # print(poly1.add(poly2))
+    
+    cipher = Kyber(256, 2, 3329, 100, 2)
+    pub, priv = cipher.gen_keys()
+    ciphertext = cipher.encrypt_message(11, pub)
+    plaintext = cipher.decrypt_message(ciphertext, priv)
+
+    print(plaintext)
