@@ -2,6 +2,8 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage{listings}
 \usepackage{url}
+\usepackage{amsmath}
+
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{bm}
 
@@ -119,7 +121,7 @@ One way this can be done by looking for repeated sections in the ciphertext and 
 \medskip
 The substring "CSASTP" is 16 letters apart. Therefore, it can be assumed that these repeated segments represent the same plaintext segments and so the key length is a factor of 16 (16,8,4,2,1). This is easier to implement with longer plaintexts as there are likely to be more repeated segments. The key length can then be guessed by looking at common factors of the distances between all the repeated segments. This method to guess the key length is known as 'Kasiski analysis' \cite{kasiski} which we can see implemented here:\medskip
 
-% \includegraphics[width = \textwidth]{Screenshot 2024-11-26 22.33.17.png}
+ %\includegraphics[width = \textwidth]{Screenshot 2024-11-26 22.33.17.png}
 \begin{lstlisting}
 def kasiski_analyser(ciphertext: str) -> list[int]:
     string_to_analyse = ""
@@ -154,7 +156,7 @@ def kasiski_analyser(ciphertext: str) -> list[int]:
     for distance in distances:
         d_factors += factors(distance)
         # factors(n) returns a set of the factors of n
- 
+
     # remove 1
     d_factors = [num for num in d_factors if num != 1]
     # sort into frequency
@@ -171,6 +173,72 @@ def kasiski_analyser(ciphertext: str) -> list[int]:
 Once the length of the key is guessed, the ciphertext can be split into many columns, with each column corresponding to one letter of the key. Frequency analysis can then  be used on each column where the most common letters in that column are compared to the most common letters in the english language to try and find the value of the Caesar shift in that column. This method (using both frequency analysis and Kasiski analysis) can be seen implemented here:\medskip
 
 Overall, the Caesar Cipher is a very primitive cipher that is very easy to crack. The Vigenere cipher is more advanced but for longer plaintexts can almost always be solved by using frequency analysis. Therefore, neither of these methods are used in modern day communication.
+
+\subsection{RSA}
+We will call the sender of a message Alice and the receiver Bob
+All classical ciphers rely on a key that both Alice and Bob know (the key is stored on their computers).
+This has some major disadvantages:
+\begin{enumerate}
+\item Alice and Bob need to meet to decide on a key
+\item It is easy to find the key 
+\item If someone else finds the key, they will be able to:
+\begin{itemize}
+\item Read all encrypted messages
+\item Send messages pretending to be Alice or Bob
+\end{itemize}
+\item Alice and Bob need to meet to decide a key
+\end{enumerate}
+
+They are symmetrical encryptions
+
+Where an operation is described as \textit{\lq{}easy\rq{}} it has time and space complexities with less than exponential growth
+
+Current Cryptography relies on a different approach, instead of Alice and Bob using the key, Alice locks her with Bob's lock. So no-one (not even Alice) can unlock the message except Bob. This needs a lock that is extremely hard to break (to unlock without the private key) but very easy to unlock for Bob (the intended recipient*).
+
+We will call this "lock" a \textit{public key} and the key that is secret a \textit{private key}. A massage can be encrypted by anyone using the public key and can only be decrypted by the person with the private key.
+The algorithm/ method for generating the public and private keys should make it easy to:
+	Generate public and private keys
+	Decipher the ciphertext with the private key
+But difficult to:
+	Decipher the ciphertext without the private key
+This is called a \textit{trapdoor algorithm}.
+
+\subsubsection{Generating the public and private keys}
+We take as an axiom that there is no easy algorithm for factoring large primes.
+\begin{itemize}
+
+   \item To encrypt a message:
+      $ C = M^e \mod n $
+	
+		
+   \item To decrypt a message:
+      $ M = C^d \mod n $
+\end{itemize}
+
+Where the following should be explained before the formula:
+C is the ciphertext (the encrypted message)
+M is the message (as an number)
+
+n, e, and d, are numbers generated such that:
+	The values are computable (so the sender can encrypt their message)
+	It must be difficult to calculate d given e, n and C (as the latter will all be publicly accessible and d would allow eavesdroppers to read the message)
+	The message can be decrypted only by knowing d (so an eavesdropper can not read the message)
+	d = the private key
+	e = part of the public key
+	n = part of the public key
+
+n is chosen to be the product of 2 primes: p and q
+The difference of p and q should be high so that checking numbers near the square root of n(which is easy to calculate) does not reveal p and q
+
+$ n = pq $
+
+Then select d to be a coprime to (p-1)(q-1) and
+
+Gcd[d, (p-1)(q-1) ] = 1
+
+Then select e so that:
+
+ ed = 1 mod[(p-1) (q-1)]
 
 \section{Programme of Work}
 \subsection{Meeting 1 (16.10.24)}
