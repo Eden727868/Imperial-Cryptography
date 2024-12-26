@@ -4,7 +4,6 @@ import math
 import random
 
 class Kyber:
-
     def __init__(
             self,
             max_degree: int,
@@ -31,7 +30,7 @@ class Kyber:
                             tuple[np.array(Polynomial),
                                   np.array(Polynomial)],
                         np.array(Polynomial)]:
-        ''' Takes nothing as input, based on attributes as object
+        ''' Takes nothing as input, keys generated are based on object attributes declared in initialisation
             Returns (public key, private key), where public key is a pair of 2 matrices of polynomials (A, t) and the private key is a single matrix of polynomials (s)
         '''
         s = []
@@ -55,13 +54,6 @@ class Kyber:
                 row.append(Polynomial(poly))
             A.append(row)
         A = np.array(A)
-    
-        # e = []
-        # for i in range(self.order):
-        #     poly = []
-        #     for j in range(self.max_degree+1):
-        #         poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-        #     e.append([Polynomial(poly)])
 
         t = np.matmul(A, s) + e
         t = self.mod_func_mat(t)
@@ -73,7 +65,9 @@ class Kyber:
             plaintext: int,
             pub_key: tuple[np.array(Polynomial), np.array(Polynomial)]
             ) -> tuple[np.array(Polynomial), Polynomial]:
-
+        ''' Takes plaintext (only as a single int) and public key (as a tuple of 2 matrices of polynomials) as input
+            Returns a tuple with 1 matrix of polynomials and 1 single polynomial as the ciphertext
+        '''
         r = []
         e1 = []
         for i in range(self.order):
@@ -84,13 +78,6 @@ class Kyber:
                 e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
             r.append([Polynomial(r_poly)])
             e1.append([Polynomial(e_poly)])
-
-        # e1 = []
-        # for i in range(self.order):
-        #     poly = []
-        #     for j in range(self.max_degree+1):
-        #         poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-        #     e1.append([Polynomial(poly)])
 
         e2 = []
         for i in range(self.max_degree+1):
@@ -112,6 +99,9 @@ class Kyber:
         return (u, v)
     
     def decrypt(self, ciphertext: tuple[np.array(Polynomial), Polynomial], priv_key: np.array(Polynomial)) -> int:
+        ''' Takes the ciphertext (a tuple of 1 matrix of polynomials and 1 single polynomial) and a private key (1 matrix of polynomials) as input
+            Returns an integer as the output
+        '''
         u = ciphertext[0]
         v = ciphertext[1]
         s = priv_key
@@ -129,6 +119,9 @@ class Kyber:
         return int("".join([str(n) for n in msg.coefficients]), 2)
 
 def normal_round(n: int) -> int:
+    ''' Python rounds down some floats ending with 0.5
+        This is used to round those upwards
+    '''
     if n - math.floor(n) < 0.5:
         return math.floor(n)
     return math.ceil(n)
