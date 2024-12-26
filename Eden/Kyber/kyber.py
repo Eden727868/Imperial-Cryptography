@@ -35,11 +35,15 @@ class Kyber:
             Returns (public key, private key), where public key is a pair of 2 matrices of polynomials (A, t) and the private key is a single matrix of polynomials (s)
         '''
         s = []
+        e = []
         for i in range(self.order):
-            poly = []
+            s_poly = []
+            e_poly = []
             for j in range(self.max_degree+1):
-                poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-            s.append([Polynomial(poly)])
+                s_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+                e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            s.append([Polynomial(s_poly)])
+            e.append([Polynomial(e_poly)])
 
         A = []
         for i in range(self.order):
@@ -52,12 +56,12 @@ class Kyber:
             A.append(row)
         A = np.array(A)
     
-        e = []
-        for i in range(self.order):
-            poly = []
-            for j in range(self.max_degree+1):
-                poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-            e.append([Polynomial(poly)])
+        # e = []
+        # for i in range(self.order):
+        #     poly = []
+        #     for j in range(self.max_degree+1):
+        #         poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+        #     e.append([Polynomial(poly)])
 
         t = np.matmul(A, s) + e
         t = self.mod_func_mat(t)
@@ -69,27 +73,25 @@ class Kyber:
             plaintext: int,
             pub_key: tuple[np.array(Polynomial), np.array(Polynomial)]
             ) -> tuple[np.array(Polynomial), Polynomial]:
-        # r = np.array([
-        #         [Polynomial([-1, 1, 0, 0])],
-        #         [Polynomial([1, 1, 0, -1])]
-        #     ])
+
         r = []
-        for i in range(self.order):
-            poly = []
-            for j in range(self.max_degree+1):
-                poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-            r.append([Polynomial(poly)])
-        # e1 = np.array([
-        #         [Polynomial([1, 1, 0])],
-        #         [Polynomial([1, 0, 0])]
-        #     ])
         e1 = []
         for i in range(self.order):
-            poly = []
+            r_poly = []
+            e_poly = []
             for j in range(self.max_degree+1):
-                poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-            e1.append([Polynomial(poly)])
-        # e2 = Polynomial([-1, -1, 0, 0])
+                r_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+                e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            r.append([Polynomial(r_poly)])
+            e1.append([Polynomial(e_poly)])
+
+        # e1 = []
+        # for i in range(self.order):
+        #     poly = []
+        #     for j in range(self.max_degree+1):
+        #         poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+        #     e1.append([Polynomial(poly)])
+
         e2 = []
         for i in range(self.max_degree+1):
             e2.append(random.randint(0-self.max_small_num, self.max_small_num))
