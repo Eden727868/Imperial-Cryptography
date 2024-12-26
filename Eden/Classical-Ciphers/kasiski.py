@@ -28,7 +28,9 @@ def kasiski_analyser(ciphertext: str) -> list[int]:
             if len(positions) > 1 and potential_repeat not in repeated_substrings:
                 if positions[0] % substring_length == positions[1] % substring_length:
                     repeated_substrings[potential_repeat] = positions
-
+    
+    print(repeated_substrings)
+    
     distances = []
     for substring in repeated_substrings:
         distances.append(repeated_substrings[substring][1] - repeated_substrings[substring][0])

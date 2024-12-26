@@ -1,7 +1,21 @@
-from math import gcd
+from math import gcd, floor, sqrt
 from random import randint, choice
 from sys import argv
-from utils import is_prime
+
+def is_prime(n: int) -> bool:
+    ''' Takes integer as input, returns true if it is prime and false if it is not
+    '''
+    if n == 1:
+        return False
+    
+    if n == 2:
+        return True
+
+    for i in range(2, floor(sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+
+    return True
 
 def gen_rsa_public_key(phi_n: int) -> int:
     ''' Takes integer phi of n as input and returns integer public key as output
@@ -41,6 +55,7 @@ def rsa_decipher(ciphertext: str, priv_key: int, n: int) -> str:
         plaintext = ciphertext ^ private key mod n 
     '''
     encoded_message = [pow(int(num), priv_key, n) for num in ciphertext.split()]
+    print("h", encoded_message)
     plaintext = "".join([chr(num) for num in encoded_message])
 
     return plaintext
