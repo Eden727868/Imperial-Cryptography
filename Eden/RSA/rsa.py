@@ -55,7 +55,6 @@ def rsa_decipher(ciphertext: str, priv_key: int, n: int) -> str:
         plaintext = ciphertext ^ private key mod n 
     '''
     encoded_message = [pow(int(num), priv_key, n) for num in ciphertext.split()]
-    print("h", encoded_message)
     plaintext = "".join([chr(num) for num in encoded_message])
 
     return plaintext
@@ -83,7 +82,7 @@ def verify_rsa_signature(message: str, pub_key: int, n: int) -> str: # same algo
     return unsigned_message
 
 if __name__ == "__main__":
-    if len(argv) != 2 or argv[1] not in ["0", "1", "2", "3", "4"]:
+    if len(argv) != 2 or argv[1] not in ["0", "1", "2", "3", "4", "5"]:
         print("Execute program with a command-line argument")
         print("\t[0] to generate private and public keys")
         print("\t[1] to encode a message using a public key")
