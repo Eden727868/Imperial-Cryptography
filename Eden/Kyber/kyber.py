@@ -132,11 +132,3 @@ def normal_round(n: int) -> int:
     if n - math.floor(n) < 0.5:
         return math.floor(n)
     return math.ceil(n)
-
-def poly_mat_str(mat: np.array(Polynomial)) -> str:
-    out = ""
-    for row in mat:
-        for poly in row:
-            out += str(poly) + ", "
-        out += "\n"
-    return out
