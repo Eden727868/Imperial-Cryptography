@@ -20,7 +20,7 @@ cypher = ceaser(key,plain,cyphertext)
 
 
 
-def breakceaser(cypher, keys):
+def break_caesar(cypher, keys):
             newplain = ""
             for i in range (0, len(cypher)):
                if ord(cypher[i]) == 32:
@@ -36,4 +36,4 @@ def breakceaser(cypher, keys):
 
 for n in range (1,27):
     keys = n
-    print("One possible solution is:", breakceaser(cypher,keys))
+    print("One possible solution is:", break_caesar(cypher,keys))
