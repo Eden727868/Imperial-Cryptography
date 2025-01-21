@@ -18,7 +18,7 @@ class Polynomial:
             while self.coefficients[0] == 0:
                 del self.coefficients[0]
         except:
-            self.coefficients = []
+            self.coefficients = [0]
 
     def __add__(self, other) -> 'Polynomial':
         ''' Adds polynomials
@@ -67,8 +67,12 @@ class Polynomial:
 
     def __mod__(self, other) -> 'Polynomial':
         ''' Takes the polynomial or integer modulus of a polynomial
-            For kyber, it is only necessary to take mod (x^n + 1), so this has not been tested for polynomials not of this form.
-            If 'other' is an int, then each coefficient in self.coefficients is taken mod other
+
+            For kyber, it is only necessary to take mod (x^n + 1), so
+            this has not been tested for polynomials not of this form.
+
+            If 'other' is an int, then each coefficient in
+            self.coefficients is taken mod other
         '''
         if type(other) == int:
             coefficients = [n % other for n in self.coefficients]
@@ -99,5 +103,4 @@ class Polynomial:
             current_power = self.get_degree() - i
             out += str(self.coefficients[i]) + "x^" + str(current_power) + " + "
         out += str(self.coefficients[-1])
-
         return out
