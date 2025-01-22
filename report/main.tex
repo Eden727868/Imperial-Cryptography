@@ -6,6 +6,14 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 
+\usepackage{listings} %amit AES
+\usepackage{nicematrix}
+\usepackage{caption}
+
+\usepackage{tikz} %stefan RSA
+\usetikzlibrary{fit}
+\usepackage{xcolor, soul}
+
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{bm}
 
@@ -281,7 +289,79 @@ almost always be solved by using frequency analysis. Therefore, neither of
 these methods are used in modern day communication.
 
 \subsection{AES and Symmetrical Encryption}
-   ...
+AES is a symmetrical cipher, meaning that the key to encode information is identical to the key to decode the ciphertext.
+AES works as a block cipher with a plain text size of 128 bits and a key size of 128/192/256 bits. The plain text, which we shall refer to as the "state", is separated into a block of 4 by 4 bytes. We can then apply a series of functions in order to the state, resulting in a cipher text.
+\\
+AES works on 2 fundamental rules:
+\begin{itemize}
+    \item Diffusion
+    \item Confusion
+    \medskip
+\end{itemize}
+Confusion is all about complicating the relationship between the key and the cipher text. 1 bit of the cipher text should depend on more than 1 bit of the key. Diffusion is all about changing the statistical structure of the cipher text, for every bit changed in the key, approximately half of the bits should change for the cipher.
+\subsubsection{Key expansion}
+Firstly, the original key is expanded into multiple round keys depending on the size of the original key. The size of the original key also determines how many rounds of transformations there will be.\medskip
+\begin{center}
+\begin{NiceTabular}{|c|c|c|}[name=AESgrid]
+
+\hline
+AES-128&AES-192&AES-256\\  
+11 round keys& 13 round keys& 15 round keys\\ 
+10 rounds&12 rounds&14 rounds\\ 
+\hline
+
+\end{NiceTabular}
+\end{center}
+\medskip
+As seen from the figure, AES-128 consists of 11 round keys and a total of 10 rounds. To generate these round keys, we are going to concatenate the bytes in each of the columns from the state, this results in 4 words. 
+\begin{center}
+\begin{NiceTabular}{|c|c|c|c|}[name=State]
+
+\hline
+\(B_{0}\)&\(B_{4}\)&\(B_{8}\)&\(B_{12}\)\\  \hline
+\(B_{1}\)&\(B_{5}\)&\(B_{9}\)&\(B_{13}\)\\ \hline
+\(B_{2}\)&\(B_{6}\)&\(B_{10}\)&\(B_{14}\)\\ \hline
+\(B_{3}\)&\(B_{7}\)&\(B_{11}\)&\(B_{15}\)\\ \hline
+
+\end{NiceTabular}
+\end{center}
+\begin{center}
+$\downarrow$
+\end{center}
+\begin{center}
+\begin{NiceTabular}{|c|c|c|c|}[name=Word-array]
+
+\hline
+\(W_{0}\)&\(W_{1}\)&\(W_{2}\)&\(W_{3}\)\\
+\hline
+
+\end{NiceTabular}
+\end{center}
+Hence, getting the first round key. For the subsequent round keys, you are going to input the last word into a g function. This g function will then perform some operations to this input, returning a completely different word. These operations are as follows:
+\begin{itemize}
+
+    \item A one byte left circular shift. This means the bytes of the word are all moved 1 place to the left, the first byte is moved at the end position.
+    
+\end{itemize}
+\begin{center}
+\begin{NiceTabular}{|c|c|c|c|}[name=Word_Bytes]
+\hline
+\(B_{0}\)&\(B_{1}\)&\(B_{2}\)&\(B_{3}\)\\
+\hline
+\end{NiceTabular}
+\end{center}
+\begin{center}
+$\downarrow$
+\end{center}
+\begin{center}
+\begin{NiceTabular}{|c|c|c|c|}[name=Shifted_Bytes]
+\hline
+\(B_{1}\)&\(B_{2}\)&\(B_{3}\)&\(B_{0}\)\\  
+\hline
+\end{NiceTabular}
+\end{center}
+ . . .
+
 
 \subsection{RSA and Public-Key Encryption}
 RSA is an assymetric modern cipher that is currently in use, which uses the
@@ -384,7 +464,85 @@ the letter 'a', with ASCII value $97$, as $97^7 \mod 155$, equal to $78$, and
 decrypt this as $78^{103}\mod 155$, which is equal to 97.
 
 \subsubsection{The Hardness of Prime Factorisation}
-   ...
+
+\textit{On RSA}
+
+
+The reason 
+\(\phi(N) = (p-1) (q-1)\)
+
+$\phi(x)$ is a function that returns the number of integers less than $x$ that are coprime to $x$ (they share no prime factors). For example:
+\begin{center}
+
+\[\phi(3)=2\]
+\begin{NiceTabular}{*3{c}}[name = Three]
+1&2&3\\
+	\CodeAfter
+		\tikz \node [fill=green, opacity = 0.3, rounded corners, fit = (Three-1-1)(Three-1-2)]{};
+\end{NiceTabular}
+
+
+\[\phi(7)=6\]
+\begin{NiceTabular}{*7{c}}[name = Seven]
+1&2&3&4&5&6&7\\
+	\CodeAfter
+		\tikz \node [fill=green, opacity = 0.3, rounded corners, fit = (Seven-1-1)(Seven-1-6)]{};
+\end{NiceTabular}
+
+
+\end{center}
+Generaly, where \(p\) is a prime: \(\phi(p) \equiv p-1\) because p is coprime to all the positive integers lower than it and there are $x-1$ positive integers less than $x$.
+\begin{center}
+\[\phi(p) \equiv p-1\]
+\[
+\underbrace{1\thickspace2\thickspace3\thickspace\ldots\thickspace}_\text{$p-1$ numbers} p
+\]
+
+
+\[\phi(7\times3)\]
+\begin{NiceTabular}{*7{c}}[name = 21]
+1&2&3&4&5&6&7\\
+8&9&10&11&12&13&14\\
+15&16&17&18&19&20&\thickspace\\
+	\CodeAfter 
+		\tikz\node[fill=red,opacity=0.3,fit=(21-1-7)(21-2-7),rounded corners]{};
+		\tikz\node[draw,dashed,fit=(21-1-3),rounded corners]{};
+		\tikz\node[draw,dashed,fit=(21-1-6),rounded corners]{};
+		\tikz\node[draw,dashed,fit=(21-2-2),rounded corners]{};
+		\tikz\node[draw,dashed,fit=(21-2-5),rounded corners]{};
+		\tikz\node[draw,dashed,fit=(21-3-1),rounded corners]{};
+		\tikz\node[draw,dashed,fit=(21-3-4),rounded corners]{};
+\end{NiceTabular}\\ 
+
+
+
+\begin{NiceTabular}{*2{c}}[name = 21key]
+multiple of 7& multiple of 3\\
+\CodeAfter \tikz\node[fill = red, opacity=.3,rounded corners, fit = (21key-1-1)]{};
+\tikz\node[draw, dashed, rounded corners, fit = (21key-1-2)]{};
+\end{NiceTabular}\\ 
+
+This is the grid for \(\phi(7)\) with an aditional 3 rows. Notice that all the multiples of 7 are in the last column and there is a single multiple of 3 in each column. This means that for each coprime to 7, there are 2 less than 21 that are also coprime to 3 (numbers coprime to 3 and 7 are coprime to 21).
+
+\end{center}
+\textit{on Euclid's algorithm}
+Euclid's algorithm finds the Greatest Common Divisor (GCD) of 2 numbers. If the GCD of 2 numbers is 1, then they are coprime.  The result of a division is given as quotient "r" remainder.
+For example, to find \(GCD(50,15)\)
+\[
+\frac{50}{15} = 3 \text{  r  } 5\]
+\[
+\frac{15}{\underbrace{5}_\text{GCD}} = 3 \text{  r  } 0\]
+When the remainder is 0, the divisor of the last division is the greatest common divisor so \(GCD(50,15) = 5\)\\
+
+Or, to find \(GCD(50,13)\)
+\[\frac{50}{13} = 3 \text{  r  } 11\]
+\[\frac{13}{11} = 1\text{  r  }2\]
+\[\frac{11}{2} = 5\text{  r  }1\]
+\[\frac{2}{\underbrace{1}_\text{GCD}} = 2\text{  r  }0\]
+\[GCD(50,13) = 1 \text{  so  } 50 \text{ and } 13 \text{ are coprimes}\]
+\textit{on prime factorisation}\\
+To break RSA we must find the prime factors of N.
+
 
 \subsection{Shor's Algorithm}
 \subsubsection{Quantum Computers}
