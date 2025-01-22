@@ -609,6 +609,55 @@ This successfully returns the plaintext.
 
 \subsection{CRYSTALS Dilithium}
 \subsection{Falcon}
+Falcon (short for Fast Fourier latice-based compact signatures over NTRU) is a cryptographic signature algorithm submitted to NIST on November 30th, 2017. It has been designed by: Pierre-Alain Fouque, Jeffrey Hoffstein, Paul Kirchner, Vadim Lyubashevsky, Thomas Pornin, Thomas Prest, Thomas Ricosset, Gregor Seiler, William Whyte and Zhenfei Zhang.
+\medskip
+Falcon is based on the NTRU lattice, which is created by large order polynomials based on two numbers (p,q) that are coprime, where q is much larger than p.
+
+\subsubsection{Key Generation}
+The private key consists of two high-order polynomials, f(x) and g(x), with coefficients much smaller than q. Additionally, f(x) must be invertible for both modulo p and modulo q, which is critical for the decryption process (these inverse polynomials can be found efficiently using Euclid's algorithm).
+A function a(x) is invertible mod z if:\\
+a(a^{-1}(x)) \equiv x (mod z) \quad and \quad a^{-1}(a(x)) \equiv x (mod z)\\
+\begin{itemize}
+    \item Let $f_{p}(x)$ denote the inverse of f(x) mod p.
+    \item Let $f_{q}(x)$ denote the inverse of f(x) mod q.
+\end{itemize}
+The public key is derived from the private key by calculating h(x) defined as:\\
+h(x) = g(x) \cdot $f_{q}$(x) mod q
+
+\subsubsection{Encryption}
+To encrypt a message m(x), which has coefficients smaller than p, a random polynomial r(x) is generated with coefficients much smaller than q. The ciphertext c(x) is then computed as:\\
+c(x) = p \cdot h(x) \cdot r(x)+m(x) mod q
+
+The multiplication of these high order polynomials can be done quickly and efficiently using Fast Fourier Transform.
+
+\subsubsection{Decryption}
+To decrypt the ciphertext c(x) the following steps are taken:\\
+c(x)\cdot f(x) = p\cdot g(x)\cdot r(x) + m(x)\cdot f(x)\quad mod q\\
+Therefore:\\
+c(x)\cdot f(x) = m(x)\cdot f(x) mod p\\
+So:\\
+m(x) = c(x)\cdot f(x)\cdot f_p(x) mod p
+
+\subsubsection{Advantages}
+The advantages of Falcon are:\\
+\begin{itemize}
+    \item It uses compact public key and signature sizes compared to other post-quantum ciphers.
+    \item The verification of Falcon signatures is fast and efficient.
+    \item Signing is relatively fast in Falcon, altough not as fast as Dilithium.
+\end{itemize}
+
+ \subsubsection{Disadvantages}
+However, the disadvantages of Falcon are:
+\begin{itemize}
+    \item Key generation and signing of Falcon require floating-point arithmetic which can be problematic for some computers in some scenarios.
+    \item Unlike other schemes, Falcon does not support certain types of masking for counteracting side-channel attacks, making it more vulnerable to these types of attacks.
+    \item Key generation and signing are complex to implement which can be challenging for developers.
+    \item Although signing and verification are fast, the process of generating keys in Falcon can be slower compared to other cryptographic schemes.
+\end{itemize}
+
+
+
+
 \subsection{SPHINCS$^+$}
 \subsection{Comparison and Usability Criteria}
 
