@@ -29,7 +29,9 @@ class Kyber:
             max_degree:    int,
             order:         int,
             mod_q:         int,
-            max_small_num: int
+            # max_small_num: int,
+            eta_1:         int,
+            eta_2:         int
             ) -> None:
 
         """ Takes 4 integers as parameters
@@ -49,7 +51,10 @@ class Kyber:
         self.mod_fn_poly = lambda poly: poly % mod_f % mod_q
         self.mod_fn_matrix = lambda row: self.mod_fn_poly(row)
 
-        self.max_small_num = max_small_num
+        # self.max_small_num = max_small_num
+        self.eta_1 = eta_1
+        self.eta_2 = eta_2
+        self.rng = np.random.default_rng()
 
     def gen_keys(self) -> tuple[
                             tuple[np.array(Polynomial),
@@ -66,11 +71,15 @@ class Kyber:
         s = []
         e = []
         for i in range(self.order):
-            s_poly = []
-            e_poly = []
-            for j in range(self.max_degree+1):
-                s_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-                e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            # s_poly = []
+            # e_poly = []
+            # s_poly = 
+            # for j in range(self.max_degree+1):
+            #     s_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            #     e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            s_poly = self.rng.binomial(self.eta_1, 0.5, self.max_degree+1)
+            e_poly = self.rng.binomial(self.eta_1, 0.5, self.max_degree+1)
+
             s.append([Polynomial(s_poly)])
             e.append([Polynomial(e_poly)])
 
@@ -105,18 +114,20 @@ class Kyber:
         r = []
         e1 = []
         for i in range(self.order):
-            r_poly = []
-            e_poly = []
-            for j in range(self.max_degree+1):
-                r_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
-                e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            # r_poly = []
+            # e_poly = []
+            # for j in range(self.max_degree+1):
+            #     r_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            #     e_poly.append(random.randint(0-self.max_small_num, self.max_small_num))
+            r_poly = self.rng.binomial(self.eta_2, 0.5, self.max_degree+1)
+            e_poly = self.rng.binomial(self.eta_2, 0.5, self.max_degree+1)
             r.append([Polynomial(r_poly)])
             e1.append([Polynomial(e_poly)])
 
-        e2 = []
-        for i in range(self.max_degree+1):
-            e2.append(random.randint(0-self.max_small_num, self.max_small_num))
-        e2 = Polynomial(e2)
+        # e2 = []
+        # for i in range(self.max_degree+1):
+        #     e2.append(random.randint(0-self.max_small_num, self.max_small_num))
+        e2 = Polynomial(self.rng.binomial(self.eta_2, 0.5, self.max_degree+1))
 
         binary_msg = Polynomial(list(map(int, bin(plaintext)[2:])))
         upscaled_msg = binary_msg * normal_round(self.mod_q / 2)
