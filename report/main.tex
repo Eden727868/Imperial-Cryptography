@@ -480,13 +480,8 @@ decrypt this as $78^{103}\mod 155$, which is equal to 97.
 
 \subsubsection{The Hardness of Prime Factorisation}
 
-\textit{On RSA}
-
-
-The reason 
-\(\phi(N) = (p-1) (q-1)\)
-
-$\phi(x)$ is a function that returns the number of integers less than $x$ that are coprime to $x$ (they share no prime factors). For example:
+We defined $\phi(x)$ as a function that returns the number of integers less
+than $x$ that are coprime to $x$ (they share no prime factors). For example:
 \begin{center}
 
 \[\phi(3)=2\]
@@ -506,13 +501,14 @@ $\phi(x)$ is a function that returns the number of integers less than $x$ that a
 
 
 \end{center}
-Generaly, where \(p\) is a prime: \(\phi(p) \equiv p-1\) because p is coprime to all the positive integers lower than it and there are $x-1$ positive integers less than $x$.
+Generally, where \(p\) is a prime: \(\phi(p) \equiv p-1\) because p is coprime
+to all the positive integers lower than it and there are $x-1$ positive
+integers less than $x$.
 \begin{center}
 \[\phi(p) \equiv p-1\]
 \[
 \underbrace{1\thickspace2\thickspace3\thickspace\ldots\thickspace}_\text{$p-1$ numbers} p
 \]
-
 
 \[\phi(7\times3)\]
 \begin{NiceTabular}{*7{c}}[name = 21]
@@ -529,33 +525,38 @@ Generaly, where \(p\) is a prime: \(\phi(p) \equiv p-1\) because p is coprime to
 		\tikz\node[draw,dashed,fit=(21-3-4),rounded corners]{};
 \end{NiceTabular}\\ 
 
-
-
 \begin{NiceTabular}{*2{c}}[name = 21key]
 multiple of 7& multiple of 3\\
 \CodeAfter \tikz\node[fill = red, opacity=.3,rounded corners, fit = (21key-1-1)]{};
 \tikz\node[draw, dashed, rounded corners, fit = (21key-1-2)]{};
 \end{NiceTabular}\\ 
 
-This is the grid for \(\phi(7)\) with an aditional 3 rows. Notice that all the multiples of 7 are in the last column and there is a single multiple of 3 in each column. This means that for each coprime to 7, there are 2 less than 21 that are also coprime to 3 (numbers coprime to 3 and 7 are coprime to 21).
-
 \end{center}
-\textit{on Euclid's algorithm}
-Euclid's algorithm finds the Greatest Common Divisor (GCD) of 2 numbers. If the GCD of 2 numbers is 1, then they are coprime.  The result of a division is given as quotient "r" remainder.
+
+This is the grid for \(\phi(7)\) with an aditional 3 rows. Notice that all the
+multiples of 7 are in the last column and there is a single multiple of 3 in
+each column. This means that for each coprime to 7, there are 2 less than 21
+that are also coprime to 3 (numbers coprime to 3 and 7 are coprime to 21).
+
+Euclid's algorithm finds the Greatest Common Divisor (GCD) of 2 numbers. If the
+GCD of 2 numbers is 1, then they are coprime.  The result of a division is
+given as quotient "r" remainder.
 For example, to find \(GCD(50,15)\)
 \[
-\frac{50}{15} = 3 \text{  r  } 5\]
+50 \div 15 = 3 \text{ r } 5\]
 \[
-\frac{15}{\underbrace{5}_\text{GCD}} = 3 \text{  r  } 0\]
-When the remainder is 0, the divisor of the last division is the greatest common divisor so \(GCD(50,15) = 5\)\\
+   15 \div 5 = 3 \text{  r  } 0
+\]
+When the remainder is 0, the divisor of the last division is the greatest
+common divisor so \(GCD(50,15) = 5\)\\
 
 Or, to find \(GCD(50,13)\)
-\[\frac{50}{13} = 3 \text{  r  } 11\]
-\[\frac{13}{11} = 1\text{  r  }2\]
-\[\frac{11}{2} = 5\text{  r  }1\]
-\[\frac{2}{\underbrace{1}_\text{GCD}} = 2\text{  r  }0\]
+\[50 \div 15 = 3 \text{  r  } 11\]
+\[13 \div 11 = 1\text{  r  }2\]
+\[11 \div 2 = 5\text{  r  }1\]
+\[2 \div 1 = 2\text{  r  }0\ \text{ so 1 is the greatest common divisor}\]
 \[GCD(50,13) = 1 \text{  so  } 50 \text{ and } 13 \text{ are coprimes}\]
-\textit{on prime factorisation}\\
+
 To break RSA we must find the prime factors of N.
 
 
@@ -603,7 +604,7 @@ This is then reducible to the following matrix:
 This gives us the solution $s = \begin{pmatrix} 5 \\ 16 \\ 12 \end{pmatrix}$. \\
 In fact, the time complexity of Gaussian elimination is $O(n^{3})$, where $n$
 is the number of equations and variables, meaning simultaneous equations can be
-solved efficiently \textit{polynomial time}, which is relatively quickly
+solved efficiently in \textit{polynomial time}, which is relatively quickly
 compared to other algorithms.
 \\
 
