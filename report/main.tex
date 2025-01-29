@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{braket}
 
 \usepackage{listings} %amit AES
 \usepackage{nicematrix}
@@ -562,7 +563,145 @@ To break RSA we must find the prime factors of N.
 
 \subsection{Shor's Algorithm}
 \subsubsection{Quantum Computers}
+   A quantum computer is a computer that exploits quantum mechanical phenomena.
+   It takes advantage of the quantum world’s properties of very small amounts
+   of physical matter, such as electrons, exhibiting both properties of
+   particles and waves to enable a bit of data to act as both a 0 and 1 at the
+   same time (known as a qubit) to make calculations much quicker and more
+   efficient than would be possible on a conventional computer. 
+   \medskip
+
+   Quantum mechanics is the study of matter and its interactions with energy on
+   the scale of atomic and subatomic particles. It explains that extremely
+   small objects exhibit both properties of particles and waves- known as
+   wave-particle duality. This can be seen when electrons are fired from an
+   electron beam gun, through a double-slit, onto a screen and an interference
+   pattern is produced, similar to one seen when a light wave is passed through
+   a double-slit. This shows that electrons are exhibiting properties of waves,
+   passing through both slits simultaneously, diffracting and interfering to
+   produce an interference patt/ern. This pattern is the result of
+   superposition, where the electron is in a superposition of going through
+   both slits at the same time and the interference between these two states
+   produces the interference pattern. However, when you try to observe the
+   electron passing through the double slit, the electron stops acting as a
+   wave and acts as a single particle and the interference pattern disappears,
+   forming two heaps of electrons behind each slit. This shows how electrons
+   (and other small particles) can be in a superposition of states and act as
+   both particles and waves. The electrons can also influence the quantum state
+   of other electrons through entanglement where  the quantum state of one
+   electron is tied to those of nearby electrons, even if they are later
+   separated by considerable distances.
+   \medskip
+
+   Just like how the electrons in the double-slit experiment can be in a
+   superposition of passing through both slits, qubits in a quantum computer
+   can be in a superposition of being 0 and 1 at the same time. Therefore, when
+   measuring qubits, the result is a probabilistic output of a classical bit.
+   This allows quantum computers to process a large amount of possibilities in
+   parallel, making them much faster than conventional computers. In addition,
+   qubits (like electrons) can become entangled, so that the state of one qubit
+   is directly linked to others even if they are separated. This creates
+   correlations between qubits that are stronger than what classical physics
+   allows. Entanglement is used in quantum computing to link qubits in such a
+   way that the information in the system as a whole is processed more
+   efficiently. Quantum computers also use quantum interference to amplify the
+   probability of correct answers while canceling out incorrect ones. This
+   process allows quantum computers to narrow down potential solutions in a way
+   that is much more efficient than classical computation.
+   \medskip
+
+   Currently, quantum computers are not yet practical for the real world as it
+   has proven difficult to engineer and control high-quality qubits, meaning it
+   has not yet been possible to built quantum computers with many qubits.
+   Qubits also can suffer quantum decoherence, leading to noise in calculations
+   if they're not sufficiently isolated from their environment. However,
+   national governments have invested heavily in trying to develop quantum
+   computers that can control many qubits with less noise and therefore lower
+   error rates. Although the future creation of computers will hold lots of
+   benefits as calculations can be done much more efficiently, they also hold
+   some dangers for this same reason. One of the main dangers in encryption.
+   This is because current encryption techniques rely on the difficulty of
+   specific mathematical problems, such as factoring large numbers or solving
+   discrete logarithms. These problems are intractable for conventional
+   computers, however quantum computers can crack these problems exponentially
+   faster than conventional computers. Therefore, ciphers resistant to attacks
+   from quantum computers must be built for future usage.
+
 \subsubsection{Prime Factorisation}
+   %As discussed in the section on RSA, classical computers struggle with
+   %step n. % dunno how stefan will number this yet.
+   %Classical computers can reduce prime factorisation to order-finding,
+   %which is, when factorising $N \in \mathbb{N}$ using a random $a \in \mathbb{N}$
+   %such that $2 \le a < N$, finding $r \in \mathbb{N}$
+   %such that $a^r \equiv 1 \mod{N}$ and $\gcd(a, N) \neq 1$.
+   %Shor's algorithm is able to find $r$ much quicker than classical
+   %computers using the \textit{Quantum Fourier Transform} (QFT).
+   %\medskip
+   %The QFT is the quantum analogue of the discrete Fourier transform (DFT),
+   %used to analyse periodic funtctions by mapping between time and
+   %frequency representations. In brief, the DFT takes an input vector
+   %$(x_0, x_1, \ldots, x_{N-1}) \in \mathbb{C}^N$ and returns an
+   %output vector $(y_0, y_1, \ldots, y_{N-1}) \in \mathbb{C}^N$ where:
+   %\[y_k = \sum_{j=0}^{N-1}x_j\exp\left( -\frac{2\pi i j k}{N} \right)   \]
+   %However, the QFT performs roughly the same operation, but in the quantum
+   %state $\ket{x} = \sum_{i=0}^{N-1}x_i\ket{i}$, and outputs another
+   %quantum state $\ket{y} = \sum_{i=0}^{N-1}y_i\ket{i}$ where:
+   %\[y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_j\exp\left( \frac{2\pi i j k}{N} \right)\]
+   %assuming $N = 2^n$ for ease of comparison.
+   %\medskip
+   %The QFT is then utilised for \textit{Quantum Phase Estimation} (QPE), which
+   %estimates the phase, or eigenvalue, of a quantum system
+   %
+   %%Shor's algorithm is able to utilise the functionality of quantum
+   %%computers to 
+
+   Shor's algorithm is one of the most groundbreaking discoveries
+   in quantum computation, allowing us to factorise integers
+   more efficiently. As discussed in the section on RSA, the problem
+   of prime factorisation is reducible to finding the period $r$ of a 
+   function $f(x) = a^x \mod{N}$, where $a$ is a random number and 
+   $N$ is the number to be factorised (so that $f(x) = f(x+r)$). For
+   simplicity, we will only consider the case where $r$ exactly divides
+   the number of points $N = 2^n$, or simply that $N/r = m$ where $m$
+   is an integer (for more general cases, and overall more detail see
+   Shor, 1997).
+   \medskip
+   We then need to prepare a register in the equal superposition state
+   and another which stores the function $f(x)$ building the total state:
+   \[\frac{1}{\sqrt{2^n}}\sum_{x=0}^{2^n-1}\ket{x}\ket{f(x)}\]
+   The modular exponentiation function can be computed efficiently in 
+   both classical and quantum computers, but \textit{quantum parallelism}
+   allows $f(x)$ to be computed for all $x$ in a single run. In addition
+   after function evaluation, the registers are \textit{entangled}. Though
+   we cannot access directly the values of $f(x)$, it collapses into a single
+   state $\ket{f(x_0)}$ after measuring the second register. Therefore, the
+   quantum computer wave function becomes:
+   \[\frac{1}{\sqrt{m}}\sum_{j=0}^{m-1}\ket{x_0+jr}\ket{f(x_0)}   (0 \le x_0 < r-1)\]
+   where $m = N/r$ is the number of x values such that $f(x) = f(x_0)$.
+   Since $f(x)$ has period $r$, it follows that $f(x_0) = f(x_0 + r)
+   = f(x_0 + 2r) = \ldots = f(x_0 + (m-1)r)$. We can then proceed to
+   ignore the second register, as it has been factorised and no longer
+   relevant to us. It can be checked that a quantum Fourier transform
+   of the first register gives the state:
+   \[\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\exp\left(\frac{2\pi x_0 k}{r}\right)\ket{k\frac{N}{r}}\]
+   which shows that \textit{quantum interference} has selected a few
+   specific frequencies. A quantum measurement of the wave function
+   above gives one of the $r$ outcomes $kN/r \text{     } (k = 0, 1, \ldots, r-1)$
+   with equal probability. Therefore, denoting $c$ as the measured
+   value, we have that $c/N = \lambda/r$ where $\lambda$ is an unkown
+   integer. Therefore, if we reduce $c/N$ to an irreducible fraction,
+   we will be left with $\lambda$ and $r$, which number theory informs
+   will occur with a probability at least $\frac{1}{\log\log r}$,
+   otherwise the algorithm fails and must be repeated. The algorithm,
+   however, should succeed with a probability arbitrarily close to one
+   after a number of runs $O(\log \log r)$.
+   \medskip
+   \\
+   Shor's algorithm can execute very efficiently on a quantum computer
+   with a sufficient number of bits, meaning it poses a major threat
+   to all prime-factorisation based cryptosystems (as well as systems
+   with other bases, such as those based on elliptic curves).
+
 
 \section{Methods}
 Due to the security concerns of modern cryptosystems posed by quantum
