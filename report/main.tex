@@ -989,6 +989,29 @@ However, the disadvantages of Falcon are:
 
 \subsection{SPHINCS$^+$}
 \subsection{Comparison and Usability Criteria}
+   The different ciphers discussed each have different goals, purposes and use-cases, so it is not wholly
+   fair to compare them and place them in a hierarchy, and it is worth mentioning that no cipher here is
+   unusable, as it would otherwise not be verified by NIST. That said, we can still assess the advantages
+   and disadvantages of each cipher, and evaluate when each cipher should be used by assessing them according
+   to certain criteria.
+   \par
+   The first is efficiency. No cipher here will be particularly slow and it is unlikely that the speed of one cipher
+   is the decisive factor for using it, though it is still the case that some of these ciphers are faster than others.
+   \par
+   Another factor is the size of the ciphertext. For example, the CRYSTALS Kyber cipher's ciphertexts can be very
+   large, and it requires that compression methos are applied in order for this cipher to be usable. Some other ciphers
+   may have ciphertexts of much smaller size.
+   \par
+   It is also important to compare the individual use-cases of each cipher. Some ciphers here are designed merely for
+   establishing a shared secret between two parties, with which other encryption methods can be used. Other ciphers may
+   be designed for digital signature signing, in order to verify that the message was sent by a particular person who can
+   be trusted. It need not be said that the purposes of each cipher affects which to use in a certain circumstance.
+   \par
+   A final main criterion is specific to quantum-resistant cryptosystems, introduced by using LWE as a base. Due to the
+   use of random errors, there is a chance that the ciphertext cannot be encrypted, for example on the chance that
+   the added error is too large and irreversibly affects the original message. Generally, this risk is astronomically low,
+   though if there even \textit{is} a chance then it should be considered when discussing the cipher.
+
 
 \section{Discussion}
 
